@@ -1,41 +1,45 @@
 #include <bits/stdc++.h>
 using namespace std;
-void Dijkstra(vector<pair<int, int>> adj[], vector<int> &ans, int src)
-{
-	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> que;
+void Dijkstra(vector<pair<int, int>> adj[], vector<int> &ans, int src) {
+	typedef pair<int, int> dpi;
+	priority_queue<dpi, vector<dpi>, greater<dpi>> que;
 	que.push({0, src}), ans[src] = 0;
-	while (!que.empty())
-	{
+	while (!que.empty()) {
 		int u = que.top().second;
 		que.pop();
-		for (auto child : adj[u])
-		{
+		for (auto child : adj[u]) {
 			int v = child.first, weight = child.second;
-			if (ans[v] > ans[u] + weight)
-			{
+			if (ans[v] > ans[u] + weight) {
 				ans[v] = ans[u] + weight;
 				que.push({ans[v], v});
 			}
 		}
 	}
 }
-void sortestPath(int src)
-{
-	queue<int> que;
-	path[src] = 0;
-	que.push(src);
-	while (!que.empty())
-	{
-		int node = que.front();
-		que.pop();
-		for (int child : Graph[node])
-		{
-			if (path[child] != inf)
-				continue;
-			path[child] = path[node] + 1;
-			que.push(child);
+bool spfa(int s, vector<int> & dist, vector<vector<pair<int, int>>> adj) {
+	int n = adj.size();
+	vector<int> cnt(n, 0), inqueue(n, false);
+	queue<int> q;
+	dist[s] = 0;
+	q.push(s);
+	inqueue[s] = true;
+	while (!q.empty()) {
+		int v = q.front();
+		q.pop(), inqueue[v] = false;
+		for (auto edge : adj[v]) {
+			auto [to, len] = edge;
+			if (dist[v] + len < dist[to]) {
+				dist[to] = dist[v] + len;
+				if (!inqueue[to]) {
+					q.push(to);
+					inqueue[to] = true, cnt[to]++;
+					if (cnt[to] > n)
+						return false;
+				}
+			}
 		}
 	}
+	return true;
 }
 int main(int argc, char const *argv[])
 {

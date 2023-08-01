@@ -11,7 +11,7 @@ struct FlowEdge {
 
 template<typename T>
 struct Dinic {
-  const T flow_inf = 1e18;
+  const T flow_inf = numeric_limits<T>::max();
   vector<FlowEdge<T>> edges;
   vector<vector<int>> adj;
   int n, m = 0, s, t;
