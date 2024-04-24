@@ -1,3 +1,5 @@
+#include <bits/stdc++.h>
+using namespace std;
 class Binary_Trie
 {
 	struct Trie_Node

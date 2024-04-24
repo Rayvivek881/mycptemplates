@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 vector<int> Graph[200005];
 int n, *depth;
 class BinaryLifting {

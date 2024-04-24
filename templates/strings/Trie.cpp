@@ -1,3 +1,5 @@
+#include <bits/stdc++.h>
+using namespace std;
 class Trie {
 	private:
 		struct TrieNode {
@@ -8,7 +10,7 @@ class Trie {
 			struct TrieNode *newNode = new TrieNode;
 			newNode->isEndOfWord = false;
 			for (int i = 0; i < 26; i++)
-				newNode->children[i] = NULL;
+				newNode->children[i] = nullptr;
 			return newNode;
 		}
 	
@@ -18,7 +20,7 @@ class Trie {
 			struct TrieNode *temp = root;
 			for (int i = 0; i < str1.size(); i++) {
 				int ind = str1[i] - 'a';
-				if (temp->children[ind] == NULL)
+				if (temp->children[ind] == nullptr)
 					temp->children[ind] = getNode();
 				temp = temp->children[ind];
 			}
@@ -28,7 +30,7 @@ class Trie {
 			struct TrieNode *temp = root;
 			for (int i = 0; i < str1.size(); i++) {
 				int ind = str1[i] - 'a';
-				if (temp->children[ind] == NULL)
+				if (temp->children[ind] == nullptr)
 					return false;
 				temp = temp->children[ind];
 			}

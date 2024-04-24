@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 vector<int> isprime, prime, SPF;
 void manipulated_seive(int MAXN) {
   isprime.assign(MAXN, 1), SPF.resize(MAXN);
@@ -11,3 +14,11 @@ void manipulated_seive(int MAXN) {
     }
   }
 }
+
+int main(int argc, char const *argv[])
+{
+  manipulated_seive(1e7 + 10);
+  cout << prime.size() << endl;
+  return 0;
+}
+

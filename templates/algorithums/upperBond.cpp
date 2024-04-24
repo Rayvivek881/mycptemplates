@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 template<typename T>
 int upperSearch(vector<T> & lst, T val) {
     int l = 0, r = lst.size() - 1, ind = -1;
