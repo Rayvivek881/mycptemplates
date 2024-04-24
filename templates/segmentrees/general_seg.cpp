@@ -21,7 +21,7 @@ class general_seg {
   vector<seg_node<T>> tree;
   void build (int ind, int l, int r) {
     if (l == r) {
-      tree[ind] = seg_node(Arr[l]);
+      tree[ind] = seg_node<T>(Arr[l]);
       return ;
     }
     int mid = (l + r) >> 1;
@@ -32,7 +32,7 @@ class general_seg {
   void update(int ind, int l, int r, int pos, T value) {
     if (l == r) {
       Arr[l] = value;
-      tree[ind] = seg_node(value);
+      tree[ind] = seg_node<T>(value);
       return ;
     }
     int mid = (l + r) >> 1;
