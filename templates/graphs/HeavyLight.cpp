@@ -104,9 +104,10 @@ class HeavyLight {
   struct element *Nodeimf;
   spashTable<T> lcaTable;
   segmentTree<T> myTree;
-auto firstMinIndex = [&](int i, int j)->int {
-  return (lst[i] <= lst[j]) ? i : j;
-};
+  
+  int firstMinIndex(int i, int j) {
+    return (lst[i] <= lst[j]) ? i : j;
+  };
 public:
   HeavyLight() {  };
   HeavyLight(int n, vector<T> Tree[], T Values[], const func &F) {

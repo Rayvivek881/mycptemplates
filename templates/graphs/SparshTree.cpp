@@ -1,3 +1,7 @@
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
 struct element {
     ll u, v, weight, ind;
     bool operator<(element & other) {

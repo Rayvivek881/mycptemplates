@@ -1,3 +1,8 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define ll long long
+
 template <typename mydata>
 class UnionFind
 {
@@ -42,7 +47,7 @@ vector<element> KruskalMST(vector<element> &Eadges, int n)
 {
 	vector<element> result;
 	UnionFind<int> graph(n + 1);
-	sortlst(Eadges);
+	sort(Eadges.begin(), Eadges.end());
 	for (auto &child : Eadges)
 	{
 		if (graph.find(child.u) != graph.find(child.v))

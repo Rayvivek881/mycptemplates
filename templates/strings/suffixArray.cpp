@@ -46,11 +46,11 @@ vector<int> lcp_construction(string const& s, vector<int> const& suffix_array) {
   return lcp;
 }
 int main(int argc, char const *argv[]) {
-    string str1 = "banana";
-    vector<int> lst = suffix_array_construction(str1);
-    for (int i = 0; i < lst.size(); i++) cout << lst[i] << " ";
-    cout << endl;
-    vector<int> temp = lcp_construction(str1, lst);
-    for (int i = 0; i < temp.size(); i++) cout << temp[i] << " ";
-    return 0;
+  string str1 = "banana";
+  vector<int> lst = suffix_array_construction(str1);
+  for (int i = 0; i < lst.size(); i++) cout << lst[i] << " ";
+  cout << endl;
+  vector<int> temp = lcp_construction(str1, lst);
+  for (int i = 0; i < temp.size(); i++) cout << temp[i] << " ";
+  return 0;
 }
