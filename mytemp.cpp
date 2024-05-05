@@ -36,8 +36,6 @@ template<typename T> void prlst(T & lst, int x, int y)
 #define precision(n) cout.precision(n);
 #define ll long long
 #define pb push_back
-#define fi first
-#define se second
 #define tests int test; cin >> test; while(test--)
 #define ub(lst, val) (upper_bound(all(lst), val) - lst.begin())
 #define lb(lst, val) (lower_bound(all(lst), val) - lst.begin())
