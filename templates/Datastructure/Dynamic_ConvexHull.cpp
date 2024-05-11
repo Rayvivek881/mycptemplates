@@ -1,5 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
+#define ll long long
 const ll is_query = -(1ll << 62);
 #define boost ios_base::sync_with_stdio(false); cin.tie(nullptr);
 struct Line {

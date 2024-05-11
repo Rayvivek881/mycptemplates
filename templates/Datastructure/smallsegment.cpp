@@ -14,4 +14,4 @@ template<class T> struct SegTree {
     if(R<l || L>r) return U; int m=(l+r)/2;
     return F(qry(L,R,i*2,l,m), qry(L,R,i*2+1,m+1,r)); }
   T print(){debug(t);}
-}
+};
