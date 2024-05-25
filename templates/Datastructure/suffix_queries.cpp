@@ -13,11 +13,11 @@ public:
     auto it = data.lower_bound(a);
     if (it != data.end() && myfunc(it->second, b) == it->second) return;
     it = data.insert(it, {a, b}), it->second = b;
-    while (next(it) != data.end() && myfunc(it->second, next(it)->second) == it->second)
-      data.erase(next(it));
+    while (it != data.begin() && myfunc(prev(it)->second, it->second) == it->second)
+      data.erase(prev(it));
   }
   T query(T a) {
     auto it = data.lower_bound(a);
-    return it == data.end() ? -1 : it->second;
+    return it == data.end() ? 0 : it->second;
   }
 };
