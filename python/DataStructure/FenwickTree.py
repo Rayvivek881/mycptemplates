@@ -1,11 +1,10 @@
 class FenwickTree:
   def __init__(self, n):
-    self.n = n + 2
-    self.tree = [0] * (n + 2)
+    self.n, self.tree = n + 2, [0] * (n + 2)
   
   def add(self, ind, x):
     ind += 1
-    while ind < self.n:
+    while ind <= self.n:
       self.tree[ind] += x
       ind += (ind & -ind)
   
@@ -15,4 +14,32 @@ class FenwickTree:
       res += self.tree[ind]
       ind -= (ind & -ind)
     return res
+
   
+class RangeFenwick:
+  def __init__(self, size):
+    self.n = size
+    self.tree1 = [0] * (self.n + 1) 
+    self.tree2 = [0] * (self.n + 1) 
+
+  def update(self, tree, idx, delta):
+    idx += 1
+    while idx <= self.n:
+      tree[idx] += delta
+      idx += idx & -idx
+
+  def query(self, tree, idx):
+    idx, res = idx + 1, 0
+    while idx > 0:
+      res += tree[idx]
+      idx -= idx & -idx
+    return res
+
+  def range_update(self, l, r, delta):
+    self.update(self.tree1, l, delta)
+    self.update(self.tree1, r + 1, -delta)
+    self.update(self.tree2, l, delta * l)
+    self.update(self.tree2, r + 1, -delta * (r + 1))
+
+  def prefix_query(self, idx):
+    return self.query(self.tree1, idx) * (idx + 1) - self.query(self.tree2, idx)
