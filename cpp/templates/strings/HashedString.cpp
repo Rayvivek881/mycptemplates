@@ -13,7 +13,6 @@ class HashedString {
 		while (pow.size() < s.size()) { 
       pow.push_back((pow.back() * B) % M); 
     }
-		p_hash[0] = 0;
 		for (int i = 0; i < s.size(); i++) {
 			p_hash[i + 1] = ((p_hash[i] * B) % M + s[i]) % M;
 		}
