@@ -22,27 +22,27 @@ class RangeFenwick:
     self.tree1 = [0] * (self.n + 1) 
     self.tree2 = [0] * (self.n + 1) 
 
-  def update(self, tree, idx, delta):
+  def _update(self, tree, idx, delta):
     idx += 1
     while idx <= self.n:
       tree[idx] += delta
       idx += idx & -idx
 
-  def query(self, tree, idx):
+  def _query(self, tree, idx):
     idx, res = idx + 1, 0
     while idx > 0:
       res += tree[idx]
       idx -= idx & -idx
     return res
 
-  def range_update(self, l, r, delta):
-    self.update(self.tree1, l, delta)
-    self.update(self.tree1, r + 1, -delta)
-    self.update(self.tree2, l, delta * l)
-    self.update(self.tree2, r + 1, -delta * (r + 1))
+  def update(self, l, r, delta):
+    self._update(self.tree1, l, delta)
+    self._update(self.tree1, r + 1, -delta)
+    self._update(self.tree2, l, delta * l)
+    self._update(self.tree2, r + 1, -delta * (r + 1))
 
   def prefix_query(self, idx):
-    return self.query(self.tree1, idx) * (idx + 1) - self.query(self.tree2, idx)
+    return self._query(self.tree1, idx) * (idx + 1) - self._query(self.tree2, idx)
   
 class Fenwick2D:
   def __init__(self, n, m):
