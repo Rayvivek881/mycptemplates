@@ -3,8 +3,7 @@ from typing import List, Callable, Any
 
 class SparseTable:
   def __init__(self, arr: List[Any], func: Callable[[Any, Any], Any]):
-    self.n = len(arr)
-    self.func = func
+    self.n, self.func = len(arr), func
     self.log = math.ceil(math.log2(self.n)) + 5
     self.table = self._build_table(arr)
 
@@ -23,6 +22,6 @@ class SparseTable:
 
   
 
-st = SparseTable([1, 3, 2, 7, 9, 11, 3, 5], max)
-print(st.query(1, 4))  # Output: 2
-print(st.query(3, 7))  # Output: 3
+st = SparseTable([1, 3, 2, 7, 9, 11, 3, 5], min)
+print(st.query(0, 0))  # Output: 2
+print(st.query(1, 7))  # Output: 3

@@ -3,7 +3,6 @@ using namespace std;
 
 #define ll long long
 class HashedString {
-  private:
 	static const ll M = 1e9 + 9, B = 9973;
 	static vector<ll> pow;
 	vector<ll> p_hash;
