@@ -3,7 +3,6 @@ using namespace std;
 
 template<typename T>
 struct range_node {
-  T lazy;
   bool is_lazy;
   range_node() { }
   range_node operator+(const range_node & other) {
