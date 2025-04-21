@@ -10,21 +10,24 @@ struct range_node {
 
     return res;
   }
-  void operator+=(T value) {
+  void apply_lazy() {
+
+  }
+  void update_lazy(T value) {
 
   }
   range_node(T value) {
 
   }
 };
-template<typename T>
+template<typename T, typename Node = range_node<T>>
 class general_range {
   int n;
   vector<T> Arr;
-  vector<range_node<T>> tree;
+  vector<Node> tree;
   void build (int ind, int l, int r) {
     if (l == r) {
-      tree[ind] = range_node<T>(Arr[l]);
+      tree[ind] = Node(Arr[l]);
       return ;
     }
     int mid = (l + r) >> 1;
@@ -34,17 +37,17 @@ class general_range {
   }
   void push(int ind, int l, int r) {
     if (tree[ind].lazy) {
-      tree[ind] += tree[ind].lazy;
+      tree[ind].apply_lazy();
       if (l != r) {
-        tree[ind << 1].lazy += tree[ind].lazy;
-        tree[ind << 1 | 1].lazy += tree[ind].lazy;
+        tree[ind << 1].update_lazy(tree[ind].lazy);
+        tree[ind << 1 | 1].update_lazy(tree[ind].lazy);
       }
       tree[ind].lazy = 0;
     }
   }
   void update(int ind, int l, int r, int start, int end, T value) {
     if (l >= start && r <= end)
-      tree[ind].lazy += value;
+      tree[ind].update_lazy(value);
     push(ind, l, r);
     if (l > end || r < start || (l >= start && r <= end)) return ;
     int mid = (l + r) >> 1;
@@ -52,7 +55,7 @@ class general_range {
     update(ind << 1 | 1, mid + 1, r, start, end, value);
     tree[ind] = tree[ind << 1] + tree[ind << 1 | 1];
   }
-  range_node<T> query(int ind, int l, int r, int start, int end) {
+  Node query(int ind, int l, int r, int start, int end) {
     push(ind, l, r);
     if (l >= start && r <= end) return tree[ind];
     int mid = (l + r) >> 1;
@@ -75,7 +78,7 @@ public:
   void update(int l, int r, T value) {
     update(1, 0, n - 1, l, r, value);
   }
-  range_node<T> query(int start, int end) {
+  Node query(int start, int end) {
     return query(1, 0, n - 1, start, end);
   }
 };
