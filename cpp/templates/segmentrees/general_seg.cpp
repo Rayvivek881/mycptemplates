@@ -14,14 +14,14 @@ struct seg_node {
     
   }
 };
-template<typename T>
+template<typename T, typename Node = seg_node<T>>
 class general_seg {
   int n;
   vector<T> Arr;
-  vector<seg_node<T>> tree;
+  vector<Node> tree;
   void build (int ind, int l, int r) {
     if (l == r) {
-      tree[ind] = seg_node<T>(Arr[l]);
+      tree[ind] = Node(Arr[l]);
       return ;
     }
     int mid = (l + r) >> 1;
@@ -32,7 +32,7 @@ class general_seg {
   void update(int ind, int l, int r, int pos, T value) {
     if (l == r) {
       Arr[l] = value;
-      tree[ind] = seg_node<T>(value);
+      tree[ind] = Node(value);
       return ;
     }
     int mid = (l + r) >> 1;
@@ -41,7 +41,7 @@ class general_seg {
     } else update(ind << 1 | 1, mid + 1, r, pos, value);
     tree[ind] = tree[ind << 1] + tree[ind << 1 | 1];
   }
-  seg_node<T> query(int ind, int l, int r, int start, int end) {
+  Node query(int ind, int l, int r, int start, int end) {
     if (l >= start && r <= end) return tree[ind];
     int mid = (l + r) >> 1;
     if (end <= mid) {
@@ -64,7 +64,7 @@ public:
   void update(int pos, T value) {
     update(1, 0, n - 1, pos, value);
   }
-  seg_node<T> query(int start, int end) {
+  Node query(int start, int end) {
     return query(1, 0, n - 1, start, end);
   }
 };
