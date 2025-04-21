@@ -14,14 +14,14 @@ struct seg_node {
     
   }
 };
-template<typename T>
+template<typename T, typename Node = seg_node<T>>
 class persistent_tree {
   int n;
   vector<T> Arr;
-  vector<vector<seg_node<T>>> tree;
+  vector<vector<Node>> tree;
   void build (int ind, int l, int r) {
     if (l == r) {
-      tree[ind].push_back(seg_node<T>(Arr[l]));
+      tree[ind].push_back(Node(Arr[l]));
       return ;
     }
     int mid = (l + r) >> 1;
@@ -32,7 +32,7 @@ class persistent_tree {
   void update(int ind, int l, int r, int pos, T value) {
     if (l == r) {
       Arr[l] = value;
-      tree[ind].push_back(seg_node<T>(value));
+      tree[ind].push_back(Node(value));
       return ;
     }
     int mid = (l + r) >> 1;
@@ -41,7 +41,7 @@ class persistent_tree {
     } else update(ind << 1 | 1, mid + 1, r, pos, value);
     tree[ind].push_back(tree[ind << 1].back() + tree[ind << 1 | 1].back());
   }
-  seg_node<T> query(int ind, int l, int r, int start, int end, int version) {
+  Node query(int ind, int l, int r, int start, int end, int version) {
     if (l >= start && r <= end) {
       return tree[ind][min(version, (int)tree[ind].size()) - 1];
     }
@@ -66,7 +66,7 @@ public:
   void update(int pos, T value) {
     update(1, 0, n - 1, pos, value);
   }
-  seg_node<T> query(int start, int end, int version) {
+  Node query(int start, int end, int version) {
     return query(1, 0, n - 1, start, end, version);
   }
 };
