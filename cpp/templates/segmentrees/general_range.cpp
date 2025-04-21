@@ -4,6 +4,7 @@ using namespace std;
 template<typename T>
 struct range_node {
   T lazy;
+  bool is_lazy;
   range_node() { }
   range_node operator+(const range_node & other) {
     range_node res;
@@ -11,9 +12,10 @@ struct range_node {
     return res;
   }
   void apply_lazy() {
-
+    this->is_lazy = false;
   }
   void update_lazy(T value) {
+    this->is_lazy = true;
 
   }
   range_node(T value) {
@@ -36,13 +38,12 @@ class general_range {
     tree[ind] = tree[ind << 1] + tree[ind << 1 | 1];
   }
   void push(int ind, int l, int r) {
-    if (tree[ind].lazy) {
-      tree[ind].apply_lazy();
+    if (tree[ind].is_lazy) {
       if (l != r) {
         tree[ind << 1].update_lazy(tree[ind].lazy);
         tree[ind << 1 | 1].update_lazy(tree[ind].lazy);
       }
-      tree[ind].lazy = 0;
+      tree[ind].apply_lazy();
     }
   }
   void update(int ind, int l, int r, int start, int end, T value) {
