@@ -16,6 +16,9 @@ public:
       parent[x] = find(parent[x]);
     return parent[x];
   }
+  bool same(T a, T b) {
+    return this->find(a) == this->find(b);
+  }
   int size() { return Components; }
   void Union(T a, T b) {
     T aset = find(a), bset = find(b);
