@@ -3,12 +3,12 @@ using namespace std;
 template <typename T>
 class UnionFind {
 public:
-  int Components;
+  int components;
   vector<T> parent, rank;
-  UnionFind(int size) : Components(size) {
-    parent.resize(size);
-    rank.assign(size, 0);
-    for (int i = 0; i < size; i++)
+  UnionFind(int size) : components(size) {
+    parent.resize(size + 1);
+    rank.assign(size + 1, 0);
+    for (int i = 0; i <= size; i++)
       parent[i] = i;
   }
   T find(T x) {
@@ -19,18 +19,17 @@ public:
   bool same(T a, T b) {
     return this->find(a) == this->find(b);
   }
-  int size() { return Components; }
+  int size() { return components; }
   void Union(T a, T b) {
-    T aset = find(a), bset = find(b);
-    if (aset == bset)
-      return;
-    Components--;
-    if (rank[aset] < rank[bset])
-      parent[aset] = bset;
-    else if (rank[aset] > rank[bset])
-      parent[bset] = aset;
+    a = find(a), b = find(b);
+    if (a == b) return;
+    components--;
+    if (rank[a] < rank[b])
+      parent[a] = b;
+    else if (rank[a] > rank[b])
+      parent[b] = a;
     else
-      parent[bset] = aset, rank[aset]++;
+      parent[b] = a, rank[a]++;
   }
 };
 int main(int argc, char const *argv[])
