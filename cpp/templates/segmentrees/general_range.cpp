@@ -3,7 +3,7 @@ using namespace std;
 
 template<typename T>
 struct range_node {
-  int state;
+  bool has_lazy;
   T lazy;
   range_node() { }
   range_node operator+(const range_node & other) {
@@ -11,28 +11,15 @@ struct range_node {
 
     return res;
   }
-  void update_value() {
-    if (this->state == 1) {
-
-    } else if (this->state == 2) {
-
-    }
-    this->state = 0;
+  void update() {
+    this->has_lazy = false;
   }
-  void update_state(T value, int state) {
-    if (state == 2) {
-      this->state = 2;
-      // need to replace lazy;
-      return;
-    }
-
-    if (this->state == 0) {
-      this->state = 1;
-    }
-    // need to update lazy;
+  void update_lazy(T value) {
+    this->has_lazy = true;
   }
   range_node(T value) {
-    this->state = 0;
+    this->has_lazy = false;
+
   }
 };
 template<typename T, typename Node = range_node<T>>
@@ -51,19 +38,17 @@ class general_range {
     tree[ind] = tree[ind << 1] + tree[ind << 1 | 1];
   }
   void push(int ind, int l, int r) {
-    if (tree[ind].state == 0)
-      return
+    if (!tree[ind].has_lazy) return;
 
-    T lazy = tree[ind].lazy, state = tree[ind].state;
     if (l != r) {
-      tree[ind << 1].update_state(lazy, state);
-      tree[(ind << 1)|1].update_state(lazy, state);
+      tree[ind << 1].update_lazy(tree[ind].lazy);
+      tree[(ind << 1)|1].update_lazy(tree[ind].lazy);
     }
-    tree[ind].update_value();
+    tree[ind].update();
   }
-  void update(int ind, int l, int r, int start, int end, T value, int state = 1) {
+  void update(int ind, int l, int r, int start, int end, T value) {
     if (l >= start && r <= end)
-      tree[ind].update_state(value, state);
+      tree[ind].update_lazy(value);
     push(ind, l, r);
     if (l > end || r < start || (l >= start && r <= end)) return ;
     int mid = (l + r) >> 1;
@@ -93,9 +78,6 @@ public:
   }
   void update(int l, int r, T value) {
     update(1, 0, n - 1, l, r, value);
-  }
-  void replace(int l, int r, T value) {
-    update(1, 0, n - 1, l, r, value, 2);
   }
   Node query(int start, int end) {
     return query(1, 0, n - 1, start, end);
