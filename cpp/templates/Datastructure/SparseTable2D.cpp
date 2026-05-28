@@ -26,8 +26,9 @@ public:
     for (int l = 1; (1 << l) <= m; l++)
       for (int k = 0; (1 << k) <= n; k++)
         for (int i = 0; i + (1 << k) <= n; i++)
-          for (int j = 0; j + (1 << l) <= m; j++)
+          for (int j = 0; j + (1 << l) <= m; j++) {
             st[k][l][i][j] = min(st[k][l - 1][i][j], st[k][l - 1][i][j + (1 << (l - 1))]);
+          }
   }
 
   int query(int x1, int y1, int x2, int y2) {

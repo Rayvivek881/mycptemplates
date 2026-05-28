@@ -1,69 +1,68 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define ll long long
-const ll is_query = -(1ll << 62);
-#define boost ios_base::sync_with_stdio(false); cin.tie(nullptr);
+using ll = long long;
+
 struct Line {
-  ll m, c;
-  mutable function<const Line *()> fun;
-  bool operator<(const Line &val) const {
-    if (val.c != is_query)
-      return m < val.m;
-    const Line *temp = fun();
-    if (!temp) return false;
-    return c - temp->c < (temp->m - m) * val.m;
-  }
+    mutable ll m, c, p;
+    bool operator<(const Line& other) const {
+        return m < other.m;
+    }
+    bool operator<(ll x) const {
+        return p < x;
+    }
 };
-template <typename T> // maintains upper hull to compute maximum
-class Dynamic_hull : public multiset<Line> {
-  ll inf = LLONG_MAX;
-  bool notOptimal(iterator ity) {
-    iterator itz = next(ity), itx = prev(ity);
-    if (ity == begin()) {
-      if (itz == end()) return false;
-      return ity->m == itz->m && ity->c <= itz->c;
+
+struct DynamicHull : multiset<Line, less<>> {
+    static const ll inf = LLONG_MAX;
+    ll div(ll a, ll b) {
+        if (b < 0) a *= -1, b *= -1;
+        return a / b - ((a ^ b) < 0 && a % b);
     }
-    if (itz == end())
-      return ity->m == itx->m && ity->c <= itx->c;
-    T value1 = (itx->c - ity->c), value2 = (ity->c - itz->c);
-    if (ity->m == itx->m)
-      value1 = (itx->c > ity->c) ? inf : -inf;
-    else value1 /= (ity->m - itx->m);
-    if (itz->m == ity->m)
-      value2 = ity->c > itz->c ? inf : -inf;
-    else value2 /= (itz->m - ity->m);
-    return value1 >= value2;
-  }
-public:
-  void insertLine(T m, T c) {
-    auto ity = insert((Line){m, c});
-    ity->fun = [=]{ return next(ity) == end() ? 0 : &*next(ity); };
-    if (notOptimal(ity)) {
-      return void(erase(ity));
+    bool isect(iterator x, iterator y) {
+        if (y == end()) {
+            x->p = inf;
+            return false;
+        }
+        if (x->m == y->m)
+            x->p = (x->c > y->c ? inf : -inf);
+        else
+            x->p = div(y->c - x->c, x->m - y->m);
+        return x->p >= y->p;
     }
-    while (next(ity) != end() && notOptimal(next(ity)))
-      erase(next(ity));
-    while (ity != begin() && notOptimal(prev(ity)))
-      erase(prev(ity));
-  }
-  T query(T x) {
-    auto l = *lower_bound((Line){x, is_query});
-    return l.m * x + l.c;
-  }
+
+    void add(ll m, ll c) {
+        auto z = insert({m, c, 0});
+        auto y = z++;
+        auto x = y;
+
+        while (isect(y, z)) z = erase(z);
+        if (x != begin() && isect(--x, y))
+            isect(x, y = erase(y));
+        while ((y = x) != begin() && (--x)->p >= y->p)
+            isect(x, erase(y));
+    }
+
+    ll query(ll x) {
+        auto l = *lower_bound(x);
+        return l.m * x + l.c;
+    }
 };
-int main(int argc, char const *argv[])
-{
-    boost;
-    int n; cin >> n;
-    vector<long long> a(n), b(n), dp(n, 0);
-    for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) cin >> b[i];
-    Dynamic_hull<long long> hull;
-    hull.insertLine(-b[0], 0);
-    for (int i = 1; i < n; i++) {
-        dp[i] = -hull.query(a[i]);
-        hull.insertLine(-b[i], -dp[i]);
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n;
+    cin >> n;
+    DynamicHull hull;
+    while (n--) {
+        ll t, a, b;
+        cin >> t >> a;
+        if (t == 1) {
+            cin >> b;
+            hull.add(a, b);
+        } else {
+            cout << hull.query(a) << "\n";
+        }
     }
-    cout << dp[n - 1];
-    return 0;
 }
